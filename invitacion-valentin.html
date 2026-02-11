@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Corazones flotantes de fondo */
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float 8s infinite;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor principal */
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            min-height: 400px;
+        }
+
+        /* Pantallas */
+        .screen {
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Títulos */
+        h1 {
+            color: #c41e3a;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: #e91e63;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+        }
+
+        /* Texto de las historias */
+        .story-text {
+            color: #333;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+
+        /* Botones */
+        .btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(245, 87, 108, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Botones de respuesta */
+        .answer-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 20px 50px;
+            font-size: 1.3em;
+        }
+
+        .btn-yes:hover {
+            box-shadow: 0 12px 30px rgba(56, 239, 125, 0.5);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+            padding: 12px 30px;
+            font-size: 1em;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-no:hover {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Pantalla de invitación final */
+        .invitation-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .invitation-card h3 {
+            color: #c41e3a;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .invitation-details {
+            color: #555;
+            font-size: 1.2em;
+            line-height: 1.8;
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .invitation-details p {
+            margin: 10px 0;
+        }
+
+        .invitation-details strong {
+            color: #c41e3a;
+        }
+
+        /* Emoji grande decorativo */
+        .big-emoji {
+            font-size: 5em;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Contador de intentos del botón "No" */
+        .no-counter {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.6em;
+            }
+            
+            .story-text {
+                font-size: 1.1em;
+            }
+            
+            .btn {
+                padding: 15px 35px;
+                font-size: 1em;
+            }
+            
+            .big-emoji {
+                font-size: 3.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Corazones flotantes -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">💕</div>
+    <div class="heart" style="left: 20%; animation-delay: 2s;">❤️</div>
+    <div class="heart" style="left: 35%; animation-delay: 4s;">💖</div>
+    <div class="heart" style="left: 50%; animation-delay: 1s;">💗</div>
+    <div class="heart" style="left: 65%; animation-delay: 3s;">💕</div>
+    <div class="heart" style="left: 80%; animation-delay: 5s;">❤️</div>
+    <div class="heart" style="left: 90%; animation-delay: 2.5s;">💖</div>
+
+    <div class="container">
+        <!-- Pantalla 1: Introducción -->
+        <div class="screen active" id="screen1">
+            <div class="big-emoji">💝</div>
+            <h1>Hola Mi Amorcito</h1>
+            <p class="story-text">
+                Tengo algo especial que contarte...
+            </p>
+            <button class="btn" onclick="nextScreen(2)">Continuar</button>
+        </div>
+
+        <!-- Pantalla 2: Primera historia -->
+        <div class="screen" id="screen2">
+            <h2>¿Sabías que...?</h2>
+            <p class="story-text">
+                Me hace muy feliz tenerte en mi vida. Cada día a tu lado es un regalo, 
+                cada sonrisa tuya ilumina mis días, y cada momento contigo es un recuerdo 
+                que atesoro en mi corazón.
+            </p>
+            <button class="btn" onclick="nextScreen(3)">Continuar</button>
+        </div>
+
+        <!-- Pantalla 3: Segunda historia -->
+        <div class="screen" id="screen3">
+            <h2>Y también...</h2>
+            <p class="story-text">
+                ¿Sabías que me haces muy feliz? Me gusta reírme contigo, abrazarte mucho,
+                y tu amor es lo más hermoso del mundo mundial. Gracias por verdaderamente hacerme feliz.
+            </p>
+            <button class="btn" onclick="nextScreen(4)">Continuar</button>
+        </div>
+
+        <!-- Pantalla 4: La pregunta -->
+        <div class="screen" id="screen4">
+            <div class="big-emoji">💘</div>
+            <h1>Entonces...</h1>
+            <h2>¿Quieres ser mi Valentín?</h2>
+            <div class="answer-buttons">
+                <button class="btn btn-yes" onclick="showInvitation()">¡Sí! 💕</button>
+                <button class="btn btn-no" id="noButton" onclick="handleNo()">No...</button>
+            </div>
+            <p class="no-counter" id="noCounter"></p>
+        </div>
+
+        <!-- Pantalla 5: La invitación -->
+        <div class="screen" id="screen5">
+            <div class="big-emoji">🎉</div>
+            <h1>¡Sabía que dirías que sí!</h1>
+            <div class="invitation-card">
+                <h3>💕 Invitación Especial 💕</h3>
+                <div class="invitation-details">
+                    <p><strong>🗓️ Fecha:</strong> 13 de Febrero, 2025</p>
+                    <p><strong>💝 Ocasión:</strong> San Valentín</p>
+                    <p><strong>👫 Plan:</strong> Vamos a cenar juntitos </p>
+                    <p><strong>⏰ Hora:</strong> 19H30</p>
+                </div>
+                <p class="story-text">
+                    Gracias por aceptar ser mi valentín no olvides que te quiero demasiado!
+                </p>
+            </div>
+            <p style="margin-top: 30px; color: #c41e3a; font-size: 1.3em; font-weight: bold;">
+                 ❤️❤️❤️❤️❤️❤️❤️❤️
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        const noMessages = [
+            "¿Estás segura? 🥺",
+            "Piénsalo bien... 💔",
+            "Mi corazón se está rompiendo... 😢",
+            "¿De verdad? ¡Noooo! 😭",
+            "Última oportunidad... 🙏",
+            "Sabía que estabas jugando 😏"
+        ];
+
+        function nextScreen(screenNumber) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla solicitada
+            document.getElementById('screen' + screenNumber).classList.add('active');
+        }
+
+        function handleNo() {
+            const noButton = document.getElementById('noButton');
+            const noCounter = document.getElementById('noCounter');
+            
+            noClickCount++;
+            
+            if (noClickCount < noMessages.length) {
+                noCounter.textContent = noMessages[noClickCount - 1];
+                
+                // Hacer el botón más pequeño cada vez
+                const newSize = Math.max(0.5, 1 - (noClickCount * 0.15));
+                noButton.style.transform = `scale(${newSize})`;
+            } else {
+                // Después de varios clics, convertir automáticamente en "Sí"
+                showInvitation();
+            }
+        }
+
+        function showInvitation() {
+            nextScreen(5);
+            
+            // Crear efecto de confeti
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ff8787', '#ffa8a8', '#ffc9c9', '#ffe3e3'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.opacity = '0.8';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.zIndex = '1000';
+                    confetti.style.animation = `fall ${2 + Math.random() * 2}s linear`;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        // Animación de caída para el confeti
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
